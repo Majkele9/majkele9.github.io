@@ -4,7 +4,7 @@
 
 ## O Aplikacji
 
-**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe.
+**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe. Całość utrzymana jest w lekkim, "piwnym" klimacie i zaprojektowana tak, by działać płynnie w każdej nowoczesnej przeglądarce.
 
 ## Funkcje
 
