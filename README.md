@@ -1,10 +1,10 @@
 # 🍺 Piwne Bety
 
-**Twój symulator zakładów i teleturniejów na luzie!**
+**Twój symulator zakładów i teleturniejów**
 
 ## O Aplikacji
 
-**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe. Całość utrzymana jest w lekkim, "piwnym" klimacie i zaprojektowana tak, by działać płynnie w każdej nowoczesnej przeglądarce.
+**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe.
 
 ## Funkcje
 
@@ -40,7 +40,7 @@ Proste i szybkie narzędzie, idealne do organizowania meczów ze znajomymi.
 Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami telewizyjnymi.
 
 - **Wieloosobowa Rozgrywka:** Graj w grupie od 4 do 7 osób.
-- **System Szans:** Każdy gracz ma trzy szanse (🍺). Błędna odpowiedź kosztuje jedną z nich.
+- **System Szans:** Każdy gracz ma trzy szanse (🍺🍺🍺). Błędna odpowiedź kosztuje jedną z nich.
 - **Poziomy Trudności:** Wybierz pytania łatwe, średnie, trudne lub mieszany zestaw dla największego wyzwania.
 - **Zasady Eliminacji:** Gracze bez szans odpadają z gry. Zwycięzcą zostaje ostatni gracz na polu bitwy!
 
