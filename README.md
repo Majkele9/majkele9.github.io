@@ -4,7 +4,7 @@
 
 ## O Aplikacji
 
-**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe. Całość utrzymana jest w lekkim, "piwnym" klimacie i zaprojektowana tak, by działać płynnie w każdej nowoczesnej przeglądarce.
+**Piwne Bety** to interaktywna aplikacja webowa stworzona z myślą o dobrej zabawie w gronie znajomych. Projekt łączy w sobie elementy losowości, strategii i wiedzy, oferując cztery unikalne moduły rozrywkowe.
 
 ## Funkcje
 
@@ -48,6 +48,12 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 
 - **Frontend:** React, TypeScript
 - **Styling:** Tailwind CSS
+- **Build Tool:** Vite
+- **Deployment:** GitHub Actions
+
+## Uruchomienie
+
+Aplikacja jest w pełni skonfigurowana do automatycznego wdrożenia na GitHub Pages za pomocą GitHub Actions. Wystarczy wysłać zmiany do gałęzi `main`.
 
 ---
 
