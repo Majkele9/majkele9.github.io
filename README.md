@@ -1,6 +1,6 @@
 # 🍺 Piwne Bety
 
-**Twój symulator zakładów i teleturniejów**
+**Twój symulator zakładów i teleturniejów na luzie!**
 
 ## O Aplikacji
 
@@ -12,9 +12,9 @@ Aplikacja składa się z czterech głównych komponentów:
 
 ### 1. 🎲 Losowe Bety
 
-Dynamiczna gra, w której sztuczna inteligencja (Google Gemini) generuje unikalne i często absurdalne scenariusze zakładów.
+Dynamiczna gra, w której mierzysz się z losowymi scenariuszami i pytaniami.
 
-- **Generowanie Pytań przez AI:** Każde pytanie jest tworzone na bieżąco, co zapewnia nieskończoną regrywalność.
+- **Wbudowana Baza Pytań:** Gra korzysta z obszernej, lokalnej bazy pytań, co zapewnia błyskawiczne działanie i regrywalność.
 - **Różnorodne Kategorie:** Wybieraj spośród wielu kategorii, od absurdalnych po pytania oparte na faktach z dziedziny sportu, historii czy nauki.
 - **System Walutowy:** Zarządzaj wirtualnymi monetami, stawiaj zakłady i pomnażaj swój kapitał.
 - **System Bonusów:** Za regularną grę otrzymujesz bonusy, które zasilają Twoje konto.
@@ -40,7 +40,7 @@ Proste i szybkie narzędzie, idealne do organizowania meczów ze znajomymi.
 Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami telewizyjnymi.
 
 - **Wieloosobowa Rozgrywka:** Graj w grupie od 4 do 7 osób.
-- **System Szans:** Każdy gracz ma trzy szanse (🍺🍺🍺). Błędna odpowiedź kosztuje jedną z nich.
+- **System Szans:** Każdy gracz ma trzy szanse (🍺). Błędna odpowiedź kosztuje jedną z nich.
 - **Poziomy Trudności:** Wybierz pytania łatwe, średnie, trudne lub mieszany zestaw dla największego wyzwania.
 - **Zasady Eliminacji:** Gracze bez szans odpadają z gry. Zwycięzcą zostaje ostatni gracz na polu bitwy!
 
@@ -48,12 +48,11 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 
 - **Frontend:** React, TypeScript
 - **Styling:** Tailwind CSS
-- **AI:** Google Gemini API
 
 ## Uruchomienie
 
 Aplikacja jest gotowa do użycia bezpośrednio w przeglądarce. Nie wymaga instalacji.
 
-
 ---
 
+*Powered by Google*
