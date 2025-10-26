@@ -54,7 +54,6 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 
 Aplikacja jest gotowa do użycia bezpośrednio w przeglądarce. Nie wymaga instalacji.
 
-**Uwaga:** Moduł **"Losowe Bety"** do generowania pytań wykorzystuje API Google Gemini. Do jego działania wymagany jest klucz API, który aplikacja pobiera ze zmiennej środowiskowej.
 
 ---
 
