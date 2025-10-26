@@ -49,10 +49,6 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 - **Frontend:** React, TypeScript
 - **Styling:** Tailwind CSS
 
-## Uruchomienie
-
-Aplikacja jest gotowa do użycia bezpośrednio w przeglądarce. Nie wymaga instalacji.
-
 ---
 
 *Powered by Google*
