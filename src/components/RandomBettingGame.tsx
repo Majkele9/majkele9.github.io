@@ -18,7 +18,6 @@ interface RandomBetHistoryEntry {
 }
 
 // --- BAZA PYTAŃ ---
-// Można dowolnie rozszerzać pulę pytań dla każdej kategorii.
 const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     'Absurdalne': [
         { question: "Czy jeśli zombie ugryzie wampira, to powstanie wampir-zombie czy zombie-wampir?", optionA: "Wampir-zombie, bo apetyt na mózgi jest silniejszy.", optionB: "Zombie-wampir, bo będzie narzekał na jakość krwi." },
