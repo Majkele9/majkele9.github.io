@@ -454,7 +454,7 @@ const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     { question: "Jak nazywa się transport publiczny używany w górach linowy?", optionA: "Kolejka linowa", optionB: "Tramwaj", correctOption: 'A' },
     ],
      'NSFW': [
-        { question: "Jak potocznie nazywa się akt prawny 'SOPA'?", optionA: "Stop Online Private Act", optionB: "Stop Online Piracy Act", correctOption: 'A' },
+        { question: "Jak potocznie nazywa się akt prawny 'SOPA'?", optionA: "Stop Online Piracy Act", optionB: "Stop Online Private Act", correctOption: 'A' },
     ],
 };
 
