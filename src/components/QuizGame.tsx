@@ -1,57 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { FALLBACK_QUESTIONS } from '../constants';
+import { Question, Difficulty } from '../types';
 
-// --- LOCAL FALLBACK QUESTIONS DATABASE ---
-const FALLBACK_QUESTIONS = {
-  'łatwy': [
-    // User-provided + supplemented questions
-    { question: "Stolicą Polski jest?", correctAnswer: "Warszawa", incorrectAnswers: ["Kraków", "Gdańsk", "Poznań"] },
-    { question: "Ile to jest 7 + 5?", correctAnswer: "12", incorrectAnswers: ["11", "13", "10"] },
-    { question: "Jakie jest chemiczne oznaczenie wody?", correctAnswer: "H₂O", incorrectAnswers: ["CO₂", "O₂", "NaCl"] },
-    { question: "Kto napisał 'Pan Tadeusz'?", correctAnswer: "Adam Mickiewicz", incorrectAnswers: ["Juliusz Słowacki", "Henryk Sienkiewicz", "Bolesław Prus"] },
-    { question: "Jakie morze leży na północy Polski?", correctAnswer: "Bałtyckie", incorrectAnswers: ["Czarne", "Śródziemne", "Północne"] },
-    { question: "Kto był pierwszym królem Polski?", correctAnswer: "Bolesław Chrobry", incorrectAnswers: ["Mieszko I", "Kazimierz Wielki", "Władysław Jagiełło"] },
-    { question: "Jakie zwierzę jest największym ssakiem na Ziemi?", correctAnswer: "Płetwal błękitny", incorrectAnswers: ["Słoń", "Żyrafa", "Niedźwiedź polarny"] },
-    { question: "Ile zawodników liczy drużyna piłkarska na boisku?", correctAnswer: "Jedenastu", incorrectAnswers: ["Dziewięciu", "Siedmiu", "Trzynastu"] },
-    { question: "Jak nazywa się najpopularniejszy system operacyjny firmy Microsoft?", correctAnswer: "Windows", incorrectAnswers: ["macOS", "Linux", "Android"] },
-    { question: "W którym roku Polska wstąpiła do Unii Europejskiej?", correctAnswer: "2004", incorrectAnswers: ["1999", "2007", "2001"] },
-    { question: "Który polski kompozytor napisał 'Etiudy' i 'Mazurki'?", correctAnswer: "Fryderyk Chopin", incorrectAnswers: ["Stanisław Moniuszko", "Karol Szymanowski", "Ignacy Jan Paderewski"] },
-    { question: "Jak nazywa się fikcyjny czarodziej z blizną w kształcie błyskawicy?", correctAnswer: "Harry Potter", incorrectAnswers: ["Gandalf", "Merlin", "Dumbledore"] },
-    { question: "Jak nazywa się najmniejsze ptaki świata?", correctAnswer: "Kolibry", incorrectAnswers: ["Wróble", "Sikorki", "Jaskółki"] },
-    { question: "Jaką częścią mowy jest słowo 'piękny'?", correctAnswer: "Przymiotnik", incorrectAnswers: ["Rzeczownik", "Czasownik", "Przysłówek"] },
-    { question: "Jak nazywa się firma, która produkuje iPhone’y?", correctAnswer: "Apple", incorrectAnswers: ["Samsung", "Google", "Microsoft"] },
-    { question: "Jakie miasto jest stolicą Francji?", correctAnswer: "Paryż", incorrectAnswers: ["Londyn", "Madryt", "Berlin"] },
-    { question: "Kto był pierwszym prezydentem III Rzeczypospolitej Polskiej?", correctAnswer: "Lech Wałęsa", incorrectAnswers: ["Aleksander Kwaśniewski", "Tadeusz Mazowiecki", "Wojciech Jaruzelski"] },
-    { question: "Jak nazywa się proces wytwarzania tlenu przez rośliny?", correctAnswer: "Fotosynteza", incorrectAnswers: ["Oddychanie", "Transpiracja", "Chemosynteza"] },
-    { question: "Jakie święto obchodzimy 24 grudnia?", correctAnswer: "Wigilię Bożego Narodzenia", incorrectAnswers: ["Wielkanoc", "Nowy Rok", "Boże Ciało"] },
-    { question: "Co oznacza skrót 'www' w adresie internetowym?", correctAnswer: "World Wide Web", incorrectAnswers: ["World Web Window", "Wide World Web", "Web World Work"] },
-  ],
-  'średni': [
-    { question: "W którym roku wybuchła II wojna światowa?", correctAnswer: "1939", incorrectAnswers: ["1914", "1941", "1945"] },
-    { question: "Jak nazywa się największe jezioro w Polsce?", correctAnswer: "Śniardwy", incorrectAnswers: ["Mamry", "Hańcza", "Wigry"] },
-    { question: "Jak nazywa się proces wytwarzania pokarmu przez rośliny?", correctAnswer: "Fotosynteza", incorrectAnswers: ["Transpiracja", "Oddychanie komórkowe", "Chemosynteza"] },
-    { question: "Kto namalował obraz 'Krzyk'?", correctAnswer: "Edvard Munch", incorrectAnswers: ["Vincent van Gogh", "Gustav Klimt", "Salvador Dali"] },
-    { question: "Kto jest autorem 'Lalki'?", correctAnswer: "Bolesław Prus", incorrectAnswers: ["Henryk Sienkiewicz", "Stefan Żeromski", "Władysław Reymont"] },
-    { question: "Który kompozytor stworzył 'Symfonię nr 9' z 'Odą do radości'?", correctAnswer: "Ludwig van Beethoven", incorrectAnswers: ["Wolfgang Amadeus Mozart", "Jan Sebastian Bach", "Fryderyk Chopin"] },
-    { question: "Jak nazywa się język programowania stworzony przez Guido van Rossuma?", correctAnswer: "Python", incorrectAnswers: ["Java", "C++", "JavaScript"] },
-    { question: "Ile graczy jest na boisku w jednej drużynie piłki ręcznej?", correctAnswer: "Siedmiu", incorrectAnswers: ["Sześciu", "Pięciu", "Ośmiu"] },
-    { question: "Jakie zjawisko opisuje równanie E=mc²?", correctAnswer: "Równoważność masy i energii", incorrectAnswers: ["Prawo powszechnego ciążenia", "Zasada zachowania pędu", "Druga zasada dynamiki"] },
-    { question: "Jak nazywa się pierwiastek o symbolu Na?", correctAnswer: "Sód", incorrectAnswers: ["Potas", "Wapń", "Magnez"] },
-  ],
-  'trudny': [
-    { question: "W którym roku rozpoczęła się wojna trzydziestoletnia?", correctAnswer: "1618", incorrectAnswers: ["1648", "1588", "1601"] },
-    { question: "Jak nazywał się cesarz rzymski, który podbił Dację?", correctAnswer: "Trajan", incorrectAnswers: ["Oktawian August", "Hadrian", "Marek Aureliusz"] },
-    { question: "Jak nazywa się najwyższy szczyt Ameryki Północnej?", correctAnswer: "Denali", incorrectAnswers: ["Mount Logan", "Pico de Orizaba", "Mount Whitney"] },
-    { question: "Które jezioro jest najgłębsze na świecie?", correctAnswer: "Bajkał", incorrectAnswers: ["Tanganika", "Morze Kaspijskie", "Wostok"] },
-    { question: "Jak nazywa się proces powstawania gamet?", correctAnswer: "Mejoza", incorrectAnswers: ["Mitoza", "Transkrypcja", "Fotosynteza"] },
-    { question: "Który narząd człowieka produkuje insulinę?", correctAnswer: "Trzustka", incorrectAnswers: ["Wątroba", "Nadnercza", "Tarczyca"] },
-    { question: "Jaki jest główny składnik chemiczny szkła?", correctAnswer: "Krzemionka (SiO₂)", incorrectAnswers: ["Węglan sodu (Na₂CO₃)", "Tlenek wapnia (CaO)", "Tlenek glinu (Al₂O₃)"] },
-    { question: "Jakim pierwiastkiem chemicznym jest Au?", correctAnswer: "Złoto", incorrectAnswers: ["Srebro", "Platyna", "Rtęć"] },
-    { question: "Jak nazywa się jednostka siły w układzie SI?", correctAnswer: "Niuton", incorrectAnswers: ["Dżul", "Pascal", "Wat"] },
-    { question: "Jakie jest pierwsze prawo de Morgana w logice?", correctAnswer: "Negacja koniunkcji jest alternatywą negacji", incorrectAnswers: ["Prawo podwójnego przeczenia", "Prawo wyłączonego środka", "Prawo rozdzielności"] },
-  ]
-};
-
-type Difficulty = 'łatwy' | 'średni' | 'trudny' | 'mieszany';
 type GamePhase = 'menu' | 'playing' | 'gameOver';
 
 interface Player {
@@ -60,12 +10,6 @@ interface Player {
   score: number;
   isActive: boolean; // Is it this player's turn?
   isEliminated: boolean;
-}
-
-interface Question {
-  question: string;
-  correctAnswer: string;
-  incorrectAnswers: string[];
 }
 
 // FIX: Added a trailing comma to the generic type parameter <T,> to resolve parsing ambiguity with JSX syntax in a .tsx file.
