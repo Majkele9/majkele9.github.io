@@ -51,10 +51,6 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 - **Build Tool:** Vite
 - **Deployment:** GitHub Actions
 
-## Uruchomienie
-
-Aplikacja jest w pełni skonfigurowana do automatycznego wdrożenia na GitHub Pages za pomocą GitHub Actions. Wystarczy wysłać zmiany do gałęzi `main`.
-
 ---
 
 *Powered by Google*
