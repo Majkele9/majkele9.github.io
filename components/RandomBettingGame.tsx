@@ -1,9 +1,4 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { GoogleGenAI, Type } from '@google/genai';
-
-// Inicjalizacja klienta API
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
 interface RandomBetScenario {
     question: string;
@@ -27,15 +22,46 @@ const BONUS_THRESHOLD = 5;
 const BONUS_AMOUNT = 250;
 const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport', 'NSFW'];
 
-const FALLBACK_SCENARIOS: { [key: string]: RandomBetScenario[] } = {
+const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     'Absurdalne': [
         { question: "Czy jeśli kot wyląduje na księżycu, to czy jego mruczenie będzie słyszalne w próżni?", optionA: "Tak, ale tylko dla innych kotów.", optionB: "Nie, ale za to zrzuci coś z krawędzi krateru." },
-        { question: "Co by się stało, gdyby gołębie zorganizowały się w profesjonalną ligę koszykówki?", optionA: "Mecze byłyby krótkie, bo ciągle gubiłyby piłkę.", optionB: "Największym sponsorem zostałaby firma produkująca chleb." }
+        { question: "Co by się stało, gdyby gołębie zorganizowały się w profesjonalną ligę koszykówki?", optionA: "Mecze byłyby krótkie, bo ciągle gubiłyby piłkę.", optionB: "Największym sponsorem zostałaby firma produkująca chleb." },
+        { question: "Kto wygrałby w wyścigu: ślimak z napędem rakietowym czy żółw na deskorolce?", optionA: "Ślimak, bo ma lepszą aerodynamikę.", optionB: "Żółw, bo ma lepszą przyczepność." },
+        { question: "Czy kanapka posmarowana masłem zawsze spada masłem na dół, nawet w stanie nieważkości?", optionA: "Tak, to fundamentalne prawo fizyki.", optionB: "Nie, w kosmosie kanapka zaczyna lewitować i kwestionować sens istnienia." },
+        { question: "Gdyby kaczki nosiły spodnie, nosiłyby je na nogach czy na całym ciele?", optionA: "Tylko na nogach, jak normalni ludzie.", optionB: "Na całym ciele, jak kombinezon, dla lepszej opływowości." },
     ],
-    'default': [
-        { question: "Jak nazywa się stolica Australii?", optionA: "Sydney", optionB: "Canberra", correctOption: 'B' },
-        { question: "Który pierwiastek chemiczny ma symbol 'Fe'?", optionA: "Złoto", optionB: "Żelazo", correctOption: 'B' }
-    ]
+    'Sport': [
+        { question: "W którym roku Polska zajęła 3. miejsce na Mistrzostwach Świata w Piłce Nożnej?", optionA: "1974", optionB: "1986", correctOption: 'A' },
+        { question: "Który skoczek narciarski jako pierwszy przekroczył granicę 250 metrów?", optionA: "Peter Prevc", optionB: "Johan Remen Evensen", correctOption: 'B'},
+    ],
+    'Historia': [
+        { question: "W którym roku miała miejsce bitwa pod Grunwaldem?", optionA: "1410", optionB: "1525", correctOption: 'A' },
+        { question: "Kto był pierwszym królem Polski?", optionA: "Mieszko I", optionB: "Bolesław Chrobry", correctOption: 'B' },
+    ],
+    'Nauka': [
+        { question: "Jaki pierwiastek chemiczny ma symbol 'Au'?", optionA: "Srebro", optionB: "Złoto", correctOption: 'B' },
+        { question: "Która planeta jest nazywana 'Czerwoną Planetą'?", optionA: "Mars", optionB: "Jowisz", correctOption: 'A' },
+    ],
+    'Technologia': [
+        { question: "Co oznacza skrót 'HTTP'?", optionA: "HyperText Transfer Protocol", optionB: "High-Tech Transfer Protocol", correctOption: 'A' },
+        { question: "Która firma stworzyła system operacyjny Android?", optionA: "Apple", optionB: "Google", correctOption: 'B' },
+    ],
+    'Popkultura': [
+        { question: "Kto zagrał główną rolę w filmie 'Matrix'?", optionA: "Keanu Reeves", optionB: "Tom Cruise", correctOption: 'A' },
+        { question: "Jak nazywa się fikcyjne miasto, w którym mieszka Batman?", optionA: "Metropolis", optionB: "Gotham City", correctOption: 'B' },
+    ],
+    'Rynki finansowe/Kryptowaluty': [
+        { question: "Jak nazywa się pierwsza i najbardziej znana kryptowaluta?", optionA: "Ethereum", optionB: "Bitcoin", correctOption: 'B' },
+        { question: "Co oznacza skrót 'giełda papierów wartościowych'?", optionA: "GPW", optionB: "NBP", correctOption: 'A' },
+    ],
+     'Transport': [
+        { question: "Który kraj jest znany z produkcji samochodów marki Ferrari?", optionA: "Niemcy", optionB: "Włochy", correctOption: 'B' },
+        { question: "Jak nazywa się największy pasażerski samolot na świecie?", optionA: "Boeing 747", optionB: "Airbus A380", correctOption: 'B' },
+    ],
+     'NSFW': [
+        { question: "W którym kraju powstał portal 'Pornhub'?", optionA: "Stany Zjednoczone", optionB: "Kanada", correctOption: 'B' },
+        { question: "Jak potocznie nazywa się akt prawny 'Stop Online Piracy Act'?", optionA: "SOPA", optionB: "PIPA", correctOption: 'A' },
+    ],
 };
 
 
@@ -45,8 +71,6 @@ const RandomBettingGame: React.FC = () => {
         return savedBalance ? JSON.parse(savedBalance) : 1000;
     });
     const [scenario, setScenario] = useState<RandomBetScenario | null>(null);
-    const [scenarioQueue, setScenarioQueue] = useState<RandomBetScenario[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
     const [stake, setStake] = useState<string>('100');
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [resultMessage, setResultMessage] = useState<string | null>(null);
@@ -61,8 +85,6 @@ const RandomBettingGame: React.FC = () => {
             const savedHistory = localStorage.getItem('piwneBetyRandomHistory');
             if (savedHistory) {
                 const parsedHistory = JSON.parse(savedHistory);
-                // FIX: Property 'map' does not exist on type 'unknown'. This error can occur if the data 
-                // from localStorage is not an array. This checks if parsedHistory is an array before mapping.
                 if (Array.isArray(parsedHistory)) {
                     return parsedHistory.map((bet: any) => ({
                         ...bet,
@@ -83,7 +105,7 @@ const RandomBettingGame: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('piwneBetyBonusCounter', JSON.stringify(bonusCounter));
     }, [bonusCounter]);
-
+    
     useEffect(() => {
         try {
             localStorage.setItem('piwneBetyRandomHistory', JSON.stringify(betHistory));
@@ -93,94 +115,25 @@ const RandomBettingGame: React.FC = () => {
     }, [betHistory]);
 
     const getNextScenario = useCallback(() => {
-        if (scenarioQueue.length > 0) {
-            const [nextScenario, ...rest] = scenarioQueue;
-            setScenario(nextScenario);
-            setScenarioQueue(rest);
-            setSelectedOption(null);
-            setResultMessage(null);
-            return true;
-        }
-        return false;
-    }, [scenarioQueue]);
-
-
-    const generateScenariosBatch = useCallback(async () => {
-        setLoading(true);
-        setScenario(null);
-
-        const isAbsurd = selectedCategory === 'Absurdalne';
-        
-        const prompt = isAbsurd
-            ? `Stwórz listę 10 absurdalnych, humorystycznych scenariuszy zakładów z kategorii: Absurdalne. Zachowaj lekki i zabawny ton. Każdy element listy powinien zawierać pytanie i dwie równie absurdalne, ale kreatywne odpowiedzi jako opcje.`
-            : `Stwórz listę 10 pytań opartych na faktach z kategorii: ${selectedCategory}. Pytania powinny być ciekawe i weryfikowalne. Każdy element listy powinien zawierać pytanie, dwie możliwe odpowiedzi (jedną prawdziwą, jedną fałszywą) i wskazanie, która odpowiedź jest poprawna.`;
-
-        const scenarioSchema = isAbsurd
-             ? {
-                type: Type.OBJECT,
-                properties: {
-                    question: { type: Type.STRING, description: "Absurdalne pytanie zakładu" },
-                    optionA: { type: Type.STRING, description: "Pierwsza możliwa odpowiedź" },
-                    optionB: { type: Type.STRING, description: "Druga możliwa odpowiedź" },
-                }
-            }
-            : {
-                type: Type.OBJECT,
-                properties: {
-                    question: { type: Type.STRING, description: "Prawdziwe pytanie z podanej kategorii" },
-                    optionA: { type: Type.STRING, description: "Jedna z odpowiedzi" },
-                    optionB: { type: Type.STRING, description: "Druga z odpowiedzi" },
-                    correctOption: { type: Type.STRING, description: "Wskazuje poprawną odpowiedź, 'A' lub 'B'" }
-                }
-            };
-
-        try {
-            const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: prompt,
-                config: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: Type.ARRAY,
-                        items: scenarioSchema
-                    }
-                }
-            });
-            const jsonStr = response.text.trim();
-            const parsedScenarios: RandomBetScenario[] = JSON.parse(jsonStr);
-             if (parsedScenarios.length > 0) {
-                setScenarioQueue(parsedScenarios);
-            } else {
-                throw new Error("API zwróciło pustą listę");
-            }
-        } catch (error) {
-            const fallback = FALLBACK_SCENARIOS[isAbsurd ? 'Absurdalne' : 'default'] || [];
-            setScenarioQueue(fallback);
-        } finally {
-            setLoading(false);
-        }
+        const scenariosForCategory = SCENARIOS_DATABASE[selectedCategory] || SCENARIOS_DATABASE['Absurdalne'];
+        const randomScenario = scenariosForCategory[Math.floor(Math.random() * scenariosForCategory.length)];
+        setScenario(randomScenario);
+        setSelectedOption(null);
+        setResultMessage(null);
     }, [selectedCategory]);
 
     useEffect(() => {
-        generateScenariosBatch();
-    }, [selectedCategory]);
-    
-    useEffect(() => {
-        if (!loading && scenarioQueue.length > 0 && !scenario) {
-            getNextScenario();
-        }
-    }, [loading, scenarioQueue, scenario, getNextScenario]);
+        getNextScenario();
+    }, [selectedCategory, getNextScenario]);
 
 
     const handleSwapBet = () => {
         if (balance >= SWAP_COST) {
-            if (!getNextScenario()) {
-                 generateScenariosBatch();
-            }
+            getNextScenario();
             setBalance(balance - SWAP_COST);
         }
     };
-
+    
     const handleTopUp = () => {
         setBalance(balance + 1000);
     };
@@ -193,7 +146,7 @@ const RandomBettingGame: React.FC = () => {
             return;
         }
 
-        const isAbsurd = selectedCategory === 'Absurdalne';
+        const isAbsurd = !scenario.correctOption;
         let isWin: boolean;
         let winningOption: string;
         
@@ -240,14 +193,10 @@ const RandomBettingGame: React.FC = () => {
             setBonusCounter(newBonusCounter);
         }
 
-        setTimeout(() => {
-            if (!getNextScenario()) {
-                generateScenariosBatch();
-            }
-        }, 3000);
+        setTimeout(getNextScenario, 3000);
     };
-
-    const groupedHistory = useMemo(() => {
+    
+     const groupedHistory = useMemo(() => {
         const groups: { [date: string]: RandomBetHistoryEntry[] } = {};
         betHistory.forEach(bet => {
             const dateKey = bet.timestamp.toLocaleDateString('pl-PL');
@@ -267,12 +216,12 @@ const RandomBettingGame: React.FC = () => {
                 </div>
             )}
             <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6">
+                 <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6">
                     <div className="flex-grow">
                         <h2 className="text-2xl font-bold text-amber-400 mb-2">Nowy Zakład</h2>
                         <button 
                             onClick={handleSwapBet}
-                            disabled={loading || balance < SWAP_COST || !!resultMessage}
+                            disabled={balance < SWAP_COST || !!resultMessage}
                             className="px-3 py-1 text-sm bg-slate-600 hover:bg-slate-500 rounded-md font-semibold transition-colors disabled:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             Wymień zakład (-{SWAP_COST} monet)
@@ -312,7 +261,7 @@ const RandomBettingGame: React.FC = () => {
                             <button
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
-                                disabled={loading || !!resultMessage}
+                                disabled={!!resultMessage}
                                 className={`px-3 py-1 rounded-md text-sm font-semibold transition-colors disabled:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 ${selectedCategory === category ? 'bg-amber-500 text-slate-900' : 'bg-slate-600 hover:bg-slate-500'}`}
                             >
                                 {category}
@@ -321,14 +270,7 @@ const RandomBettingGame: React.FC = () => {
                     </div>
                 </div>
 
-                {loading && (
-                    <div className="flex flex-col items-center justify-center space-y-4 p-8 min-h-[300px]">
-                        <div className="spinner"></div>
-                        <p className="text-lg text-slate-400">Ładowanie...</p>
-                    </div>
-                )}
-                
-                {!loading && scenario && (
+                {scenario && (
                     <div className="space-y-6">
                         <p className="text-lg text-center text-slate-300 min-h-[60px] flex items-center justify-center">{scenario.question}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -375,7 +317,7 @@ const RandomBettingGame: React.FC = () => {
                     </div>
                 )}
             </div>
-
+            
             {betHistory.length > 0 && (
                 <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-amber-400 mb-4">Historia Losowych Betów</h2>
@@ -384,7 +326,6 @@ const RandomBettingGame: React.FC = () => {
                              <div key={date}>
                                 <h3 className="text-xl font-semibold text-slate-400 mb-3 pb-2 border-b border-slate-700 sticky top-0 bg-slate-800 py-2">{date}</h3>
                                 <div className="space-y-4">
-                                    {/* FIX: Ensure `bets` is an array before mapping to prevent crashes from malformed history data. */}
                                     {Array.isArray(bets) && bets.map(bet => {
                                         const isWin = bet.outcome === 'won';
                                         const statusColor = isWin ? 'border-green-500/50 bg-green-500/10' : 'border-red-500/50 bg-red-500/10';

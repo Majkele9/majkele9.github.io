@@ -31,6 +31,7 @@ const BettingGame: React.FC = () => {
             const savedHistory = localStorage.getItem('piwneBetyHistory');
             if (savedHistory) {
                 const parsedHistory = JSON.parse(savedHistory);
+                // FIX: Ensure parsedHistory is an array and filter its contents to be safe from malformed data.
                 if (Array.isArray(parsedHistory)) {
                     return parsedHistory.filter(bet => Array.isArray(bet?.players)).map((bet: any) => ({
                         ...bet,
@@ -245,6 +246,7 @@ const BettingGame: React.FC = () => {
                              <div key={date}>
                                 <h3 className="text-xl font-semibold text-slate-400 mb-3 pb-2 border-b border-slate-700">{date}</h3>
                                 <div className="space-y-4">
+                                    {/* FIX: Ensure `bets` is an array before mapping to prevent runtime errors. */}
                                     {Array.isArray(bets) && bets.map(bet => {
                                         const statusColor = {
                                             pending: 'border-slate-700',
@@ -256,6 +258,7 @@ const BettingGame: React.FC = () => {
                                             <div key={bet.id} className={`p-4 rounded-lg border-l-4 ${statusColor[bet.status]} bg-slate-700`}>
                                                 <div className="flex justify-between items-start">
                                                     <div>
+                                                        {/* FIX: Ensure bet.players is an array before mapping. */}
                                                         <p className="font-bold">{Array.isArray(bet.players) ? bet.players.map(p => p.name).join(' vs ') : ''}</p>
                                                         <p>Obstawiono: <span className="font-semibold text-amber-400">{bet.selection}</span></p>
                                                         <p>Stawka: {bet.stake.toFixed(2)} PLN</p>

@@ -68,6 +68,7 @@ interface Question {
   incorrectAnswers: string[];
 }
 
+// FIX: Added a trailing comma to the generic type parameter <T,> to resolve parsing ambiguity with JSX syntax in a .tsx file.
 const shuffleArray = <T,>(array: T[]): T[] => {
   return [...array].sort(() => Math.random() - 0.5);
 };

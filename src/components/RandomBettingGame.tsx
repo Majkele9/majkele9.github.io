@@ -17,130 +17,52 @@ interface RandomBetHistoryEntry {
     timestamp: Date;
 }
 
-// --- BAZA PYTAŃ ---
-const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
-    'Absurdalne': [
-        { question: "Czy jeśli zombie ugryzie wampira, to powstanie wampir-zombie czy zombie-wampir?", optionA: "Wampir-zombie, bo apetyt na mózgi jest silniejszy.", optionB: "Zombie-wampir, bo będzie narzekał na jakość krwi." },
-        { question: "Gdyby zwierzęta mogły mówić, które z nich byłoby najbardziej irytujące?", optionA: "Gołębie, ciągle prosiłyby o okruszki.", optionB: "Mewy, bo krzyczałyby o wszystko." },
-        { question: "Co by się stało, gdyby grawitacja na Ziemi zmniejszyła się o połowę?", optionA: "Wszyscy bylibyśmy lepsi w koszykówkę.", optionB: "Spadające tosty rzadziej lądowałyby masłem w dół." },
-        { question: "Czy syreny płacą podatki w podwodnym królestwie?", optionA: "Tak, w muszelkach.", optionB: "Nie, mają ulgę na ogon." },
-        { question: "Jaki byłby najgorszy smak chipsów, jaki można wymyślić?", optionA: "Pasta do zębów z miętą.", optionB: "Mokra karma dla psa." },
-        { question: "Gdybyś mógł mieć supermoc, która jest kompletnie bezużyteczna, co by to było?", optionA: "Zdolność rozmawiania z karpiami.", optionB: "Moc zmieniania koloru skarpetek siłą woli." },
-        { question: "Która czynność jest bardziej podejrzana: jedzenie banana bokiem czy picie mleka prosto z kartonu na ulicy?", optionA: "Jedzenie banana bokiem.", optionB: "Picie mleka z kartonu." },
-        { question: "Czy roboty marzą o elektrycznych owcach?", optionA: "Tak, w rozdzielczości 4K.", optionB: "Nie, marzą o darmowym Wi-Fi." },
-        { question: "Co jest dziwniejsze: kot przynoszący martwą mysz w prezencie czy człowiek dający kotu zabawkową mysz?", optionA: "Prezent od kota.", optionB: "Prezent dla kota." },
-        { question: "Gdyby rośliny doniczkowe mogły się mścić za zaniedbanie, jak by to robiły?", optionA: "Zrzuciłyby liście na ulubiony dywan.", optionB: "Celowo rosłyby w stronę, gdzie zasłaniają telewizor." },
-    ],
-    'Sport': [
-        { question: "Ile złotych medali olimpijskich w chodzie sportowym zdobył Robert Korzeniowski?", optionA: "Cztery", optionB: "Trzy", correctOption: 'A' },
-        { question: "W którym roku Polska reprezentacja w piłce nożnej zajęła 3. miejsce na Mistrzostwach Świata?", optionA: "1982", optionB: "1978", correctOption: 'A' },
-        { question: "Jak nazywa się jedyna Polka, która zdobyła Wimbledon w grze pojedynczej?", optionA: "Iga Świątek", optionB: "Agnieszka Radwańska", correctOption: 'B' }, // Radwańska wygrała juniorski
-        { question: "Który skoczek narciarski jako pierwszy w historii przekroczył barierę 250 metrów?", optionA: "Peter Prevc", optionB: "Johan Remen Evensen", correctOption: 'B' },
-        { question: "Jak nazywa się rzut w koszykówce, za który można zdobyć 3 punkty?", optionA: "Rzut osobisty", optionB: "Rzut z dystansu", correctOption: 'B' },
-        { question: "Ile trwa tercja w hokeju na lodzie?", optionA: "20 minut", optionB: "15 minut", correctOption: 'A' },
-        { question: "Które z tych miast nigdy nie organizowało letnich igrzysk olimpijskich?", optionA: "Madryt", optionB: "Helsinki", correctOption: 'A' },
-        { question: "W jakiej dyscyplinie sportu legendą jest Michael Jordan?", optionA: "Koszykówka", optionB: "Baseball", correctOption: 'A' },
-        { question: "Ile wynosi dystans maratonu?", optionA: "42,195 km", optionB: "40,550 km", correctOption: 'A' },
-        { question: "W jakim kraju odbyły się pierwsze nowożytne Igrzyska Olimpijskie w 1896 roku?", optionA: "Grecja", optionB: "Francja", correctOption: 'A' },
-    ],
-    'Historia': [
-        { question: "W którym roku odbył się chrzest Polski?", optionA: "966", optionB: "1025", correctOption: 'A' },
-        { question: "Kto był pierwszym królem Polski?", optionA: "Mieszko I", optionB: "Bolesław Chrobry", correctOption: 'B' },
-        { question: "Bitwa pod Grunwaldem miała miejsce w roku:", optionA: "1410", optionB: "1525", correctOption: 'A' },
-        { question: "Jak nazywała się unia, która połączyła Polskę i Litwę w jedno państwo w 1569 roku?", optionA: "Unia Lubelska", optionB: "Unia w Krewie", correctOption: 'A' },
-        { question: "Kto był ostatnim królem Polski?", optionA: "August II Mocny", optionB: "Stanisław August Poniatowski", correctOption: 'B' },
-        { question: "W którym roku wybuchła II wojna światowa?", optionA: "1939", optionB: "1941", correctOption: 'A' },
-        { question: "Jak nazywał się przywódca powstania kościuszkowskiego?", optionA: "Tadeusz Kościuszko", optionB: "Józef Poniatowski", correctOption: 'A' },
-        { question: "Kto był pierwszym prezydentem USA?", optionA: "Thomas Jefferson", optionB: "George Washington", correctOption: 'B' },
-        { question: "Upadek Muru Berlińskiego, symboliczny koniec zimnej wojny, miał miejsce w roku:", optionA: "1989", optionB: "1991", correctOption: 'A' },
-        { question: "Jak nazywał się statek, którym Kolumb dopłynął do Ameryki?", optionA: "Santa Maria", optionB: "Mayflower", correctOption: 'A' },
-    ],
-    'Nauka': [
-        { question: "Która planeta w Układzie Słonecznym jest największa?", optionA: "Jowisz", optionB: "Saturn", correctOption: 'A' },
-        { question: "Jak nazywa się proces, w którym rośliny przekształcają światło słoneczne w energię?", optionA: "Fotosynteza", optionB: "Chemosynteza", correctOption: 'A' },
-        { question: "Jaki jest chemiczny symbol złota?", optionA: "Ag", optionB: "Au", correctOption: 'B' },
-        { question: "Ile wynosi prędkość światła w próżni?", optionA: "ok. 300 000 km/s", optionB: "ok. 150 000 km/s", correctOption: 'A' },
-        { question: "Jak nazywa się siła przyciągająca obiekty w kierunku Ziemi?", optionA: "Grawitacja", optionB: "Magnetyzm", correctOption: 'A' },
-        { question: "Który z tych gazów jest najlżejszy?", optionA: "Hel", optionB: "Wodór", correctOption: 'B' },
-        { question: "Jak nazywa się jednostka mocy w układzie SI?", optionA: "Dżul", optionB: "Wat", correctOption: 'B' },
-        { question: "Co bada entomologia?", optionA: "Ptaki", optionB: "Owady", correctOption: 'B' },
-        { question: "Jak nazywa się największy organ ludzkiego ciała?", optionA: "Wątroba", optionB: "Skóra", correctOption: 'B' },
-        { question: "Z ilu kości składa się szkielet dorosłego człowieka?", optionA: "206", optionB: "256", correctOption: 'A' },
-    ],
-    'Technologia': [
-        { question: "Co oznacza skrót 'HTTP'?", optionA: "HyperText Transfer Protocol", optionB: "High-Tech Transfer Protocol", correctOption: 'A' },
-        { question: "Kto jest współzałożycielem firmy Microsoft?", optionA: "Steve Jobs", optionB: "Bill Gates", correctOption: 'B' },
-        { question: "Jak nazywa się popularny język programowania, stworzony przez Google, często używany do tworzenia aplikacji mobilnych?", optionA: "Swift", optionB: "Kotlin", correctOption: 'B' },
-        { question: "Co jest podstawową jednostką informacji w informatyce?", optionA: "Bit", optionB: "Bajt", correctOption: 'A' },
-        { question: "Jak nazywała się pierwsza na świecie sieć komputerowa, poprzedniczka internetu?", optionA: "ARPANET", optionB: "NSFNET", correctOption: 'A' },
-        { question: "Która firma produkuje procesory z serii 'Ryzen'?", optionA: "Intel", optionB: "AMD", correctOption: 'B' },
-        { question: "Jaką nazwę nosi system operacyjny firmy Apple dla telefonów iPhone?", optionA: "macOS", optionB: "iOS", correctOption: 'B' },
-        { question: "Co oznacza skrót 'GPS'?", optionA: "Global Positioning System", optionB: "General Path System", correctOption: 'A' },
-        { question: "Jak nazywa się technologia bezprzewodowej komunikacji na krótkie odległości, używana np. w słuchawkach?", optionA: "Wi-Fi", optionB: "Bluetooth", correctOption: 'B' },
-        { question: "Która z tych firm nie jest primarnie producentem smartfonów?", optionA: "Xiaomi", optionB: "NVIDIA", correctOption: 'B' },
-    ],
-    'Popkultura': [
-        { question: "Który zespół wydał album 'The Dark Side of the Moon'?", optionA: "Pink Floyd", optionB: "Led Zeppelin", correctOption: 'A' },
-        { question: "Kto wyreżyserował film 'Pulp Fiction'?", optionA: "Steven Spielberg", optionB: "Quentin Tarantino", correctOption: 'B' },
-        { question: "Jak nazywa się główny bohater serii gier 'The Witcher'?", optionA: "Geralt z Rivii", optionB: "Jaskier", correctOption: 'A' },
-        { question: "W którym serialu pojawia się postać Waltera White'a?", optionA: "The Sopranos", optionB: "Breaking Bad", correctOption: 'B' },
-        { question: "Kto jest autorem sagi 'Pieśń Lodu i Ognia', na podstawie której powstał serial 'Gra o Tron'?", optionA: "J.R.R. Tolkien", optionB: "George R.R. Martin", correctOption: 'B' },
-        { question: "Jak nazywa się fikcyjne miasto, w którym mieszka Batman?", optionA: "Metropolis", optionB: "Gotham City", correctOption: 'B' },
-        { question: "Która piosenkarka jest znana jako 'Królowa Popu'?", optionA: "Madonna", optionB: "Beyoncé", correctOption: 'A' },
-        { question: "W grze 'Minecraft', z jakiego surowca tworzy się najtrwalsze narzędzia?", optionA: "Diament", optionB: "Netheryt", correctOption: 'B' },
-        { question: "Jak nazywa się statek kosmiczny Hana Solo w 'Gwiezdnych Wojnach'?", optionA: "Sokół Millennium", optionB: "Gwiezdny Niszczyciel", correctOption: 'A' },
-        { question: "Który film zdobył Oscara za najlepszy film w 2020 roku?", optionA: "Parasite", optionB: "Joker", correctOption: 'A' },
-    ],
-    'Rynki finansowe/Kryptowaluty': [
-        { question: "Jak nazywa się proces tworzenia nowych Bitcoinów?", optionA: "Kopanie (Mining)", optionB: "Drukowanie (Printing)", correctOption: 'A' },
-        { question: "Która kryptowaluta jest drugą co do wielkości pod względem kapitalizacji rynkowej po Bitcoinie?", optionA: "Ripple (XRP)", optionB: "Ethereum (ETH)", correctOption: 'B' },
-        { question: "Co to jest 'hossa' na giełdzie?", optionA: "Okres spadków cen akcji.", optionB: "Okres wzrostów cen akcji.", correctOption: 'B' },
-        { question: "Jak nazywa się zjawisko gwałtownego i niekontrolowanego wzrostu cen?", optionA: "Deflacja", optionB: "Hiperinflacja", correctOption: 'B' },
-        { question: "Kto jest anonimowym twórcą Bitcoina?", optionA: "Satoshi Nakamoto", optionB: "Vitalik Buterin", correctOption: 'A' },
-        { question: "Co oznacza skrót 'NFT'?", optionA: "Non-Fungible Token", optionB: "New Financial Technology", correctOption: 'A' },
-        { question: "Jak nazywa się główny indeks giełdowy w Polsce?", optionA: "WIG20", optionB: "DAX", correctOption: 'A' },
-        { question: "Co to jest 'dywidenda'?", optionA: "Część zysku firmy wypłacana akcjonariuszom.", optionB: "Podatek od zysków kapitałowych.", correctOption: 'A' },
-        { question: "Jak nazywa się technologia leżąca u podstaw większości kryptowalut?", optionA: "Blockchain", optionB: "Cloud computing", correctOption: 'A' },
-        { question: "Co to jest 'shortowanie' (krótka sprzedaż) akcji?", optionA: "Kupowanie akcji z nadzieją na wzrost ceny.", optionB: "Sprzedawanie pożyczonych akcji z nadzieją na spadek ceny.", correctOption: 'B' },
-    ],
-    'Transport': [
-        { question: "Który z tych samochodów jest produkowany przez firmę z Niemiec?", optionA: "Ferrari", optionB: "Porsche", correctOption: 'B' },
-        { question: "Jak nazywa się najszybszy seryjnie produkowany pociąg pasażerski na świecie?", optionA: "Shanghai Maglev", optionB: "TGV", correctOption: 'A' },
-        { question: "Która firma lotnicza jest największa na świecie pod względem wielkości floty?", optionA: "Ryanair", optionB: "American Airlines", correctOption: 'B' },
-        { question: "Jak nazywa się największy na świecie samolot transportowy, zniszczony podczas wojny w Ukrainie?", optionA: "An-225 Mrija", optionB: "Airbus A380", correctOption: 'A' },
-        { question: "W którym mieście działa najstarsza linia metra na świecie?", optionA: "W Londynie", optionB: "W Paryżu", correctOption: 'A' },
-        { question: "Jak nazywa się słynny luksusowy pociąg kursujący między Paryżem a Stambułem?", optionA: "Trans-Siberian Express", optionB: "Orient Express", correctOption: 'B' },
-        { question: "Która marka jest znana z produkcji motocykli 'Harley-Davidson'?", optionA: "Japońska", optionB: "Amerykańska", correctOption: 'B' },
-        { question: "Co oznacza skrót 'TIR' na ciężarówkach?", optionA: "Transport International Routier", optionB: "Truck in Road", correctOption: 'A' },
-        { question: "Jak nazywał się największy statek pasażerski, który zatonął w 1912 roku?", optionA: "Titanic", optionB: "Britannic", correctOption: 'A' },
-        { question: "Który kraj jest znany z marki samochodów 'Volvo'?", optionA: "Niemcy", optionB: "Szwecja", correctOption: 'B' },
-    ],
-    'NSFW': [
-        { question: "Czy ananas na pizzy to zbrodnia przeciwko ludzkości?", optionA: "Oczywiście, że tak.", optionB: "To kulinarny majstersztyk." },
-        { question: "Co jest gorsze: skarpety do sandałów czy krawat do koszuli z krótkim rękawem?", optionA: "Skarpety do sandałów.", optionB: "Krawat do koszuli." },
-        { question: "Czy wlewanie mleka do miski przed płatkami śniadaniowymi jest normalne?", optionA: "Absolutnie nie.", optionB: "Tylko tak jest poprawnie." },
-        { question: "Kto ma zawsze rację w związku?", optionA: "Ten, kto głośniej krzyczy.", optionB: "Ten, kto ma pilota od telewizora." },
-        { question: "Jaki jest ostateczny dowód na to, że weekend się skończył?", optionA: "Dźwięk budzika w poniedziałek.", optionB: "Uczucie egzystencjalnej pustki w niedzielę wieczorem." },
-        { question: "Co jest bardziej prawdopodobne: kosmici lądujący w Białym Domu czy znalezienie dwóch identycznych płatków śniegu?", optionA: "Kosmici w Białym Domu.", optionB: "Identyczne płatki śniegu." },
-        { question: "Czy 'jeszcze jedno piwo' to zawsze dobry pomysł?", optionA: "Tak, bez wyjątku.", optionB: "Pytanie retoryczne." },
-        { question: "Jaka jest najgorsza odpowiedź na 'Kocham Cię'?", optionA: "'Dzięki, ja ciebie też lubię.'", optionB: "'Aha.'" },
-        { question: "Czy czytanie cudzych wiadomości jest gorsze niż zjedzenie ostatniego kawałka pizzy bez pytania?", optionA: "Czytanie wiadomości.", optionB: "Zjedzenie pizzy." },
-        { question: "Kiedy oficjalnie stajesz się stary?", optionA: "Gdy zaczynasz narzekać na hałas.", optionB: "Gdy cieszysz się, że plany zostały odwołane." },
-    ],
-     'default': [
-        { question: "Jak nazywa się stolica Australii?", optionA: "Sydney", optionB: "Canberra", correctOption: 'B' },
-        { question: "Który pierwiastek chemiczny ma symbol 'Fe'?", optionA: "Złoto", optionB: "Żelazo", correctOption: 'B' }
-    ]
-};
-
-const shuffleArray = <T,>(array: T[]): T[] => {
-  return [...array].sort(() => Math.random() - 0.5);
-};
-
 const SWAP_COST = 20;
 const BONUS_THRESHOLD = 5;
 const BONUS_AMOUNT = 250;
-const CATEGORIES = Object.keys(SCENARIOS_DATABASE).filter(k => k !== 'default');
+const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport', 'NSFW'];
+
+const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
+    'Absurdalne': [
+        { question: "Czy jeśli kot wyląduje na księżycu, to czy jego mruczenie będzie słyszalne w próżni?", optionA: "Tak, ale tylko dla innych kotów.", optionB: "Nie, ale za to zrzuci coś z krawędzi krateru." },
+        { question: "Co by się stało, gdyby gołębie zorganizowały się w profesjonalną ligę koszykówki?", optionA: "Mecze byłyby krótkie, bo ciągle gubiłyby piłkę.", optionB: "Największym sponsorem zostałaby firma produkująca chleb." },
+        { question: "Kto wygrałby w wyścigu: ślimak z napędem rakietowym czy żółw na deskorolce?", optionA: "Ślimak, bo ma lepszą aerodynamikę.", optionB: "Żółw, bo ma lepszą przyczepność." },
+        { question: "Czy kanapka posmarowana masłem zawsze spada masłem na dół, nawet w stanie nieważkości?", optionA: "Tak, to fundamentalne prawo fizyki.", optionB: "Nie, w kosmosie kanapka zaczyna lewitować i kwestionować sens istnienia." },
+        { question: "Gdyby kaczki nosiły spodnie, nosiłyby je na nogach czy na całym ciele?", optionA: "Tylko na nogach, jak normalni ludzie.", optionB: "Na całym ciele, jak kombinezon, dla lepszej opływowości." },
+    ],
+    'Sport': [
+        { question: "W którym roku Polska zajęła 3. miejsce na Mistrzostwach Świata w Piłce Nożnej?", optionA: "1974", optionB: "1986", correctOption: 'A' },
+        { question: "Który skoczek narciarski jako pierwszy przekroczył granicę 250 metrów?", optionA: "Peter Prevc", optionB: "Johan Remen Evensen", correctOption: 'B'},
+    ],
+    'Historia': [
+        { question: "W którym roku miała miejsce bitwa pod Grunwaldem?", optionA: "1410", optionB: "1525", correctOption: 'A' },
+        { question: "Kto był pierwszym królem Polski?", optionA: "Mieszko I", optionB: "Bolesław Chrobry", correctOption: 'B' },
+    ],
+    'Nauka': [
+        { question: "Jaki pierwiastek chemiczny ma symbol 'Au'?", optionA: "Srebro", optionB: "Złoto", correctOption: 'B' },
+        { question: "Która planeta jest nazywana 'Czerwoną Planetą'?", optionA: "Mars", optionB: "Jowisz", correctOption: 'A' },
+    ],
+    'Technologia': [
+        { question: "Co oznacza skrót 'HTTP'?", optionA: "HyperText Transfer Protocol", optionB: "High-Tech Transfer Protocol", correctOption: 'A' },
+        { question: "Która firma stworzyła system operacyjny Android?", optionA: "Apple", optionB: "Google", correctOption: 'B' },
+    ],
+    'Popkultura': [
+        { question: "Kto zagrał główną rolę w filmie 'Matrix'?", optionA: "Keanu Reeves", optionB: "Tom Cruise", correctOption: 'A' },
+        { question: "Jak nazywa się fikcyjne miasto, w którym mieszka Batman?", optionA: "Metropolis", optionB: "Gotham City", correctOption: 'B' },
+    ],
+    'Rynki finansowe/Kryptowaluty': [
+        { question: "Jak nazywa się pierwsza i najbardziej znana kryptowaluta?", optionA: "Ethereum", optionB: "Bitcoin", correctOption: 'B' },
+        { question: "Co oznacza skrót 'giełda papierów wartościowych'?", optionA: "GPW", optionB: "NBP", correctOption: 'A' },
+    ],
+     'Transport': [
+        { question: "Który kraj jest znany z produkcji samochodów marki Ferrari?", optionA: "Niemcy", optionB: "Włochy", correctOption: 'B' },
+        { question: "Jak nazywa się największy pasażerski samolot na świecie?", optionA: "Boeing 747", optionB: "Airbus A380", correctOption: 'B' },
+    ],
+     'NSFW': [
+        { question: "W którym kraju powstał portal 'Pornhub'?", optionA: "Stany Zjednoczone", optionB: "Kanada", correctOption: 'B' },
+        { question: "Jak potocznie nazywa się akt prawny 'Stop Online Piracy Act'?", optionA: "SOPA", optionB: "PIPA", correctOption: 'A' },
+    ],
+};
 
 
 const RandomBettingGame: React.FC = () => {
@@ -149,7 +71,6 @@ const RandomBettingGame: React.FC = () => {
         return savedBalance ? JSON.parse(savedBalance) : 1000;
     });
     const [scenario, setScenario] = useState<RandomBetScenario | null>(null);
-    const [scenarioQueue, setScenarioQueue] = useState<RandomBetScenario[]>([]);
     const [stake, setStake] = useState<string>('100');
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [resultMessage, setResultMessage] = useState<string | null>(null);
@@ -184,7 +105,7 @@ const RandomBettingGame: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('piwneBetyBonusCounter', JSON.stringify(bonusCounter));
     }, [bonusCounter]);
-
+    
     useEffect(() => {
         try {
             localStorage.setItem('piwneBetyRandomHistory', JSON.stringify(betHistory));
@@ -193,44 +114,26 @@ const RandomBettingGame: React.FC = () => {
         }
     }, [betHistory]);
 
-    const loadNewScenarios = useCallback((category: string) => {
-        const questionsForCategory = SCENARIOS_DATABASE[category] || SCENARIOS_DATABASE['default'];
-        const shuffled = shuffleArray(questionsForCategory);
-        const [firstScenario, ...rest] = shuffled;
-        
-        setScenarioQueue(rest);
-        setScenario(firstScenario);
+    const getNextScenario = useCallback(() => {
+        const scenariosForCategory = SCENARIOS_DATABASE[selectedCategory] || SCENARIOS_DATABASE['Absurdalne'];
+        const randomScenario = scenariosForCategory[Math.floor(Math.random() * scenariosForCategory.length)];
+        setScenario(randomScenario);
         setSelectedOption(null);
         setResultMessage(null);
-    }, []);
+    }, [selectedCategory]);
 
     useEffect(() => {
-        loadNewScenarios(selectedCategory);
-    }, [selectedCategory, loadNewScenarios]);
-
-
-    const getNextScenario = useCallback(() => {
-        if (scenarioQueue.length > 0) {
-            const [nextScenario, ...rest] = scenarioQueue;
-            setScenario(nextScenario);
-            setScenarioQueue(rest);
-            setSelectedOption(null);
-            setResultMessage(null);
-            return true;
-        }
-        return false;
-    }, [scenarioQueue]);
+        getNextScenario();
+    }, [selectedCategory, getNextScenario]);
 
 
     const handleSwapBet = () => {
-        if (balance >= SWAP_COST && !resultMessage) {
-            if (!getNextScenario()) {
-                 loadNewScenarios(selectedCategory);
-            }
+        if (balance >= SWAP_COST) {
+            getNextScenario();
             setBalance(balance - SWAP_COST);
         }
     };
-
+    
     const handleTopUp = () => {
         setBalance(balance + 1000);
     };
@@ -243,11 +146,11 @@ const RandomBettingGame: React.FC = () => {
             return;
         }
 
-        const isFactBased = 'correctOption' in scenario;
+        const isAbsurd = !scenario.correctOption;
         let isWin: boolean;
         let winningOption: string;
         
-        if (!isFactBased) {
+        if (isAbsurd) {
             isWin = Math.random() < 0.5;
             winningOption = isWin ? selectedOption : (selectedOption === scenario.optionA ? scenario.optionB : scenario.optionA);
         } else {
@@ -290,14 +193,10 @@ const RandomBettingGame: React.FC = () => {
             setBonusCounter(newBonusCounter);
         }
 
-        setTimeout(() => {
-            if (!getNextScenario()) {
-                loadNewScenarios(selectedCategory);
-            }
-        }, 3000);
+        setTimeout(getNextScenario, 3000);
     };
-
-    const groupedHistory = useMemo(() => {
+    
+     const groupedHistory = useMemo(() => {
         const groups: { [date: string]: RandomBetHistoryEntry[] } = {};
         betHistory.forEach(bet => {
             const dateKey = bet.timestamp.toLocaleDateString('pl-PL');
@@ -317,7 +216,7 @@ const RandomBettingGame: React.FC = () => {
                 </div>
             )}
             <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6">
+                 <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6">
                     <div className="flex-grow">
                         <h2 className="text-2xl font-bold text-amber-400 mb-2">Nowy Zakład</h2>
                         <button 
@@ -370,7 +269,7 @@ const RandomBettingGame: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                
+
                 {scenario && (
                     <div className="space-y-6">
                         <p className="text-lg text-center text-slate-300 min-h-[60px] flex items-center justify-center">{scenario.question}</p>
@@ -418,7 +317,7 @@ const RandomBettingGame: React.FC = () => {
                     </div>
                 )}
             </div>
-
+            
             {betHistory.length > 0 && (
                 <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-amber-400 mb-4">Historia Losowych Betów</h2>
