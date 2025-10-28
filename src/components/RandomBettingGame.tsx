@@ -320,20 +320,7 @@ const RandomBettingGame: React.FC = () => {
             
             {betHistory.length > 0 && (
                 <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-8">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                        <h2 className="text-2xl font-bold text-amber-400">Historia Losowych Betów</h2>
-                        <button
-                            onClick={() => {
-                                if (window.confirm('Czy na pewno chcesz usunąć całą historię zakładów? Ta operacja jest nieodwracalna!')) {
-                                    setBetHistory([]);
-                                    localStorage.removeItem('piwneBetyRandomHistory');
-                                }
-                            }}
-                            className="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-md font-semibold transition-colors flex items-center gap-2 text-sm"
-                        >
-                            🗑️ Wyczyść historię
-                        </button>
-                    </div>
+                    <h2 className="text-2xl font-bold text-amber-400 mb-4">Historia Losowych Betów</h2>
                     <div className="space-y-6 max-h-96 overflow-y-auto pr-2">
                          {Object.entries(groupedHistory).map(([date, bets]) => (
                              <div key={date}>
