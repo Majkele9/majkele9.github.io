@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useMemo, useEffect } from 'react';
 
 type BetStatus = 'pending' | 'won' | 'lost';
@@ -34,9 +31,6 @@ const BettingGame: React.FC = () => {
             const savedHistory = localStorage.getItem('piwneBetyHistory');
             if (savedHistory) {
                 const parsedHistory = JSON.parse(savedHistory);
-                // FIX: Property 'map' does not exist on type 'unknown'. This can happen when localStorage data is not an array,
-                // or when an object within the array is malformed (e.g., missing the 'players' array).
-                // We ensure parsedHistory is an array and filter its contents to be safe.
                 if (Array.isArray(parsedHistory)) {
                     return parsedHistory.filter(bet => Array.isArray(bet?.players)).map((bet: any) => ({
                         ...bet,
@@ -113,6 +107,13 @@ const BettingGame: React.FC = () => {
     
     const toggleSortOrder = () => {
         setSortOrder(prevOrder => prevOrder === 'desc' ? 'asc' : 'desc');
+    };
+
+    const handleClearHistory = () => {
+        if (window.confirm('Czy na pewno chcesz usunąć całą historię zakładów? Ta operacja jest nieodwracalna.')) {
+            setBetHistory([]);
+            localStorage.removeItem('piwneBetyHistory');
+        }
     };
 
     const potentialReturn = useMemo(() => {
@@ -235,23 +236,31 @@ const BettingGame: React.FC = () => {
 
             {betHistory.length > 0 && (
                 <div className="bg-slate-800 p-6 rounded-lg shadow-lg">
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
                         <h2 className="text-2xl font-bold text-amber-400">Historia Zakładów</h2>
-                        <button 
-                            onClick={toggleSortOrder}
-                            className="px-3 py-1 text-sm bg-slate-600 hover:bg-slate-500 rounded-md font-semibold transition-colors"
-                            title={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
-                            aria-label={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
-                        >
-                            Sortuj: {sortOrder === 'desc' ? 'Najnowsze' : 'Najstarsze'}
-                        </button>
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={toggleSortOrder}
+                                className="px-3 py-1 text-sm bg-slate-600 hover:bg-slate-500 rounded-md font-semibold transition-colors"
+                                title={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
+                                aria-label={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
+                            >
+                                Sortuj: {sortOrder === 'desc' ? 'Najnowsze' : 'Najstarsze'}
+                            </button>
+                            <button 
+                                onClick={handleClearHistory}
+                                className="px-3 py-1 text-sm bg-red-600 hover:bg-red-500 rounded-md font-semibold transition-colors"
+                                title="Usuń całą historię"
+                            >
+                                🗑️ Wyczyść
+                            </button>
+                        </div>
                     </div>
                     <div className="space-y-6">
                         {Object.entries(groupedHistory).map(([date, bets]) => (
                              <div key={date}>
                                 <h3 className="text-xl font-semibold text-slate-400 mb-3 pb-2 border-b border-slate-700">{date}</h3>
                                 <div className="space-y-4">
-                                    {/* FIX: Ensure `bets` is an array before mapping to prevent runtime errors from malformed localStorage data. */}
                                     {Array.isArray(bets) && bets.map(bet => {
                                         const statusColor = {
                                             pending: 'border-slate-700',
@@ -263,7 +272,6 @@ const BettingGame: React.FC = () => {
                                             <div key={bet.id} className={`p-4 rounded-lg border-l-4 ${statusColor[bet.status]} bg-slate-700`}>
                                                 <div className="flex justify-between items-start">
                                                     <div>
-                                                        {/* FIX: Ensure bet.players is an array before mapping to prevent runtime errors from malformed localStorage data. */}
                                                         <p className="font-bold">{Array.isArray(bet.players) ? bet.players.map(p => p.name).join(' vs ') : ''}</p>
                                                         <p>Obstawiono: <span className="font-semibold text-amber-400">{bet.selection}</span></p>
                                                         <p>Stawka: {bet.stake.toFixed(2)} PLN</p>
