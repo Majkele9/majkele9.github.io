@@ -710,25 +710,63 @@ const RandomBettingGame: React.FC = () => {
             </div>
             
             {betHistory.length > 0 && (
-                <div className="bg-slate-800 p-4 md:p-6 rounded-lg shadow-lg max-w-2xl mx-auto mt-8">
-                    <h2 className="text-2xl font-bold text-amber-400 mb-4">Historia Losowych Betów</h2>
-                    <div className="space-y-6 max-h-96 overflow-y-auto pr-2">
-                         {Object.entries(groupedHistory).map(([date, bets]) => (
+                <div className="bg-slate-800 p-6 rounded-lg shadow-lg">
+                    <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
+                        <h2 className="text-2xl font-bold text-amber-400">Historia Zakładów</h2>
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={toggleSortOrder}
+                                className="px-3 py-1 text-sm bg-slate-600 hover:bg-slate-500 rounded-md font-semibold transition-colors"
+                                title={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
+                                aria-label={`Zmień sortowanie na ${sortOrder === 'desc' ? 'najstarsze' : 'najnowsze'}`}
+                            >
+                                Sortuj: {sortOrder === 'desc' ? 'Najnowsze' : 'Najstarsze'}
+                            </button>
+                            <button 
+                                onClick={handleClearHistory}
+                                className="px-3 py-1 text-sm bg-red-600 hover:bg-red-500 rounded-md font-semibold transition-colors"
+                                title="Usuń całą historię"
+                            >
+                                🗑️ Wyczyść
+                            </button>
+                        </div>
+                    </div>
+                    <div className="space-y-6">
+                        {Object.entries(groupedHistory).map(([date, bets]) => (
                              <div key={date}>
-                                <h3 className="text-xl font-semibold text-slate-400 mb-3 pb-2 border-b border-slate-700 sticky top-0 bg-slate-800 py-2">{date}</h3>
+                                <h3 className="text-xl font-semibold text-slate-400 mb-3 pb-2 border-b border-slate-700">{date}</h3>
                                 <div className="space-y-4">
                                     {Array.isArray(bets) && bets.map(bet => {
-                                        const isWin = bet.outcome === 'won';
-                                        const statusColor = isWin ? 'border-green-500/50 bg-green-500/10' : 'border-red-500/50 bg-red-500/10';
-                                        const profitText = isWin ? `+${bet.winnings.toFixed(0)}` : `${bet.winnings.toFixed(0)}`;
-                                        
+                                        const statusColor = {
+                                            pending: 'border-slate-700',
+                                            won: 'border-green-500/50 bg-green-500/10',
+                                            lost: 'border-red-500/50 bg-red-500/10',
+                                        };
+                                        const profit = (bet.potentialReturn - bet.stake).toFixed(2);
                                         return (
-                                            <div key={bet.id} className={`p-4 rounded-lg border-l-4 ${statusColor} bg-slate-700`}>
-                                                <p className="font-bold text-slate-300">"{bet.question}"</p>
-                                                <p>Obstawiono: <span className="font-semibold text-amber-400">{bet.selection}</span></p>
-                                                <p>Stawka: <span className="font-semibold">{bet.stake}</span> monet</p>
-                                                <p>Wynik: <span className={`font-bold ${isWin ? 'text-green-400' : 'text-red-400'}`}>{profitText} monet</span></p>
-                                                <p className="text-xs text-slate-400 mt-1">{bet.timestamp.toLocaleString('pl-PL')}</p>
+                                            <div key={bet.id} className={`p-4 rounded-lg border-l-4 ${statusColor[bet.status]} bg-slate-700`}>
+                                                <div className="flex justify-between items-start">
+                                                    <div>
+                                                        <p className="font-bold">{Array.isArray(bet.players) ? bet.players.map(p => p.name).join(' vs ') : ''}</p>
+                                                        <p>Obstawiono: <span className="font-semibold text-amber-400">{bet.selection}</span></p>
+                                                        <p>Stawka: {bet.stake.toFixed(2)} PLN</p>
+                                                        <p>
+                                                            Status: {bet.status === 'won' ? `Wygrana: ${bet.potentialReturn.toFixed(2)} PLN (Zysk: ${profit} PLN)` : bet.status === 'lost' ? `Przegrana: -${bet.stake.toFixed(2)} PLN` : 'Oczekujący'}
+                                                        </p>
+                                                         {bet.note && (
+                                                            <div className="mt-2 p-2 bg-slate-600/50 rounded-md">
+                                                                <p className="text-sm text-slate-300 italic">"{bet.note}"</p>
+                                                            </div>
+                                                        )}
+                                                        <p className="text-xs text-slate-400 mt-2">{bet.timestamp.toLocaleString()}</p>
+                                                    </div>
+                                                    {bet.status === 'pending' && (
+                                                        <div className="flex space-x-2">
+                                                            <button onClick={() => handleBetStatusChange(bet.id, 'won')} className="px-3 py-1 bg-green-600 hover:bg-green-500 rounded text-sm font-bold">Wygrany</button>
+                                                            <button onClick={() => handleBetStatusChange(bet.id, 'lost')} className="px-3 py-1 bg-red-600 hover:bg-red-500 rounded text-sm font-bold">Przegrany</button>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         );
                                     })}
@@ -742,4 +780,4 @@ const RandomBettingGame: React.FC = () => {
     );
 };
 
-export default RandomBettingGame;
+export default BettingGame;
