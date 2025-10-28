@@ -1,6 +1,6 @@
 # 🍺 Piwne Bety
 
-**Twój symulator zakładów i teleturniejów na luzie!**
+**Twój symulator zakładów i teleturniejów!**
 
 ## O Aplikacji
 
