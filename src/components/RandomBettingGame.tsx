@@ -20,7 +20,7 @@ interface RandomBetHistoryEntry {
 const SWAP_COST = 20;
 const BONUS_THRESHOLD = 5;
 const BONUS_AMOUNT = 250;
-const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport', 'NSFW'];
+const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport'];
 
 const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     'Absurdalne': [
