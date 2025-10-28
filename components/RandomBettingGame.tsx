@@ -20,7 +20,7 @@ interface RandomBetHistoryEntry {
 const SWAP_COST = 20;
 const BONUS_THRESHOLD = 5;
 const BONUS_AMOUNT = 250;
-const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport', 'NSFW'];
+const CATEGORIES = ['Absurdalne', 'Sport', 'Historia', 'Nauka', 'Technologia', 'Popkultura', 'Rynki finansowe/Kryptowaluty', 'Transport',];
 
 const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     'Absurdalne': [
@@ -452,9 +452,6 @@ const SCENARIOS_DATABASE: { [key: string]: RandomBetScenario[] } = {
     { question: "Jak nazywa się szybka kolej między miastami w Europie?", optionA: "TGV", optionB: "Eurostar", correctOption: 'A' },
     { question: "Który kraj słynie z produkcji samochodów marki Audi?", optionA: "Niemcy", optionB: "Włochy", correctOption: 'A' },
     { question: "Jak nazywa się transport publiczny używany w górach linowy?", optionA: "Kolejka linowa", optionB: "Tramwaj", correctOption: 'A' },
-    ],
-     'NSFW': [
-        { question: "Jak potocznie nazywa się akt prawny 'SOPA'?", optionA: "Stop Online Piracy Act", optionB: "Stop Online Private Act", correctOption: 'A' },
     ],
 };
 
