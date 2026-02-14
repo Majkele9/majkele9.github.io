@@ -52,3 +52,5 @@ Klasyczny quiz wiedzy w formacie "1 z X", inspirowany popularnymi programami tel
 - **Deployment:** GitHub Actions
 
 ---
+
+https://majkele9.github.io/
